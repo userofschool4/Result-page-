@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSBIE &mdash; TGMS Pegadapally Official Portal</title>
+      <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SheetJS for Excel parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      <style>
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.01); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
+        @media print {
+            body * { visibility: hidden; }
+            #reportCardModal, #reportCardModal * { visibility: visible; }
+            #reportCardModal { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; box-shadow: none; background: white; }
+            .no-print { display: none !important; }
+            body::after {
+                content: "TSBIE PEGADAPALLY - OFFICIAL MEMORANDUM";
+                position: fixed;
+                top: 50%; left: 50%;
+                transform: translate(-50%, -50%) rotate(-30deg);
+                font-size: 3rem; color: rgba(13, 148, 136, 0.04);
+                z-index: 9999; pointer-events: none; font-weight: 900; white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+  <body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-900">
+
+    <!-- Top Announcement Banner -->
+    <div class="bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-800 text-white font-extrabold text-xs sm:text-sm py-2.5 px-4 text-center shadow-md flex items-center justify-center gap-2">
+        <span class="bg-amber-400 text-teal-950 text-[10px] uppercase px-2.5 py-0.5 rounded-full animate-bounce shadow">TSBIE Notice</span>
+        <span>🎓 TELANGANA BOARD OF INTERMEDIATE EDUCATION &mdash; TGMS PEGADAPALLY HALF-YEARLY RESULTS LIVE!</span>
+    </div>
+        <!-- Header Navbar -->
+    <header class="bg-teal-950 text-white shadow-xl py-4 px-6 flex justify-between items-center border-b border-teal-800/50">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="logout()">
+            <div class="bg-gradient-to-br from-amber-400 to-amber-600 text-teal-950 p-3 rounded-2xl font-black text-xl shadow-lg flex items-center justify-center">
+                <i class="fa-solid fa-landmark-dome"></i>
+            </div>
+            <div>
+                <h1 class="text-xs sm:text-sm font-black tracking-wider uppercase text-amber-300">Telangana Board of Intermediate Education</h1>
+                <p class="text-sm sm:text-base font-black text-white tracking-wide">TGMS PEGADAPALLY <span class="text-xs font-normal text-teal-300">(Academic Year 2025-2026)</span></p>
+            </div>
+        </div>
+        <div id="navUserBadge" class="hidden flex items-center space-x-3">
+            <span id="welcomeUser" class="text-xs sm:text-sm font-bold bg-teal-900/80 px-4 py-2 rounded-xl border border-teal-700 text-teal-100 shadow-inner"></span>
+            <button onclick="logout(); playSound('click')" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition shadow flex items-center gap-1.5">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8 space-y-8">
+              <!-- PUBLIC LANDING VIEW -->
+        <div id="publicLandingView" class="space-y-8">
+            
+            <div class="bg-gradient-to-br from-teal-950 via-teal-900 to-slate-950 text-white rounded-3xl shadow-2xl p-8 sm:p-14 text-center relative overflow-hidden animate-pulse-slow border border-teal-800/60">
+                <div class="absolute -right-10 -bottom-10 text-teal-700/15 text-9xl font-black pointer-events-none">TSBIE</div>
+                <span class="bg-amber-400 text-teal-950 text-xs font-black uppercase px-4 py-1.5 rounded-full tracking-wider shadow">Official Board Examination Results</span>
+                <h2 class="text-3xl sm:text-6xl font-black mt-4 mb-4 tracking-tight">Half-Yearly Examination Portal</h2>
+                <p class="text-teal-100 max-w-2xl mx-auto text-sm sm:text-base mb-8 leading-relaxed">
+                    Authorized examination portal for Telangana Board of Intermediate Education &mdash; TGMS Pegadapally. Securely access your verified subject-wise memos, live class ranks, and official board report cards.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="scrollToLogin('student'); playSound('click')" class="bg-amber-500 hover:bg-amber-400 text-teal-950 font-extrabold px-7 py-3.5 rounded-2xl shadow-xl transition flex items-center gap-2 transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-user-graduate"></i> Student Login Portal
+                    </button>
+                    <button onclick="scrollToLogin('admin'); playSound('click')" class="bg-slate-900 hover:bg-slate-950 text-white font-extrabold px-7 py-3.5 rounded-2xl shadow-xl transition border border-slate-700 flex items-center gap-2 transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-user-shield"></i> Admin Management
+                    </button>
+                </div>
+            </div>
+                      <!-- Principal's Message & Institutional Thoughts -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="md:col-span-2 bg-white rounded-3xl shadow-xl p-8 border border-slate-200/80 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-bl-full -z-0 pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 bg-gradient-to-br from-teal-800 to-teal-950 text-amber-400 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-md">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-black text-slate-900 text-xl">Principal's Desk</h3>
+                                <p class="text-xs text-teal-800 font-bold">Prabhakar Reddy Kotha &mdash; Principal, TGMS Pegadapally</p>
+                            </div>
+                        </div>
+                        <blockquote class="text-slate-700 text-sm sm:text-base italic leading-relaxed mb-6">
+                            "In strict compliance with the Telangana Board of Intermediate Education standards, TGMS Pegadapally strives to cultivate academic excellence, moral integrity, and advanced critical thinking. Our half-yearly evaluations stand as a testament to our students' diligence and our faculty's steadfast guidance."
+                        </blockquote>
+                    </div>
+                    <div class="border-t pt-4 flex justify-between items-center text-xs font-bold text-teal-900 relative z-10">
+                        <span>&mdash; Prabhakar Reddy Kotha, Principal</span>
+                        <span class="bg-teal-50 px-3.5 py-1.5 rounded-xl border border-teal-200 text-teal-900">TSBIE Curriculum Standard</span>
+                    </div>
+                </div>
+                              <div class="bg-gradient-to-br from-teal-950 via-teal-900 to-slate-900 text-white rounded-3xl shadow-xl p-8 flex flex-col justify-between border border-teal-800">
+                    <div>
+                        <div class="text-amber-400 text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                            <i class="fa-solid fa-bolt text-amber-400"></i> Thought of the Day
+                        </div>
+                        <h4 class="text-xl font-black text-teal-100 mb-3 leading-snug">"Excellence is not an act, but a lifelong habit."</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Use your half-yearly memorandum as your foundation to conquer upcoming board milestones with unwavering focus.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-teal-800/60 text-[11px] text-teal-300 flex items-center justify-between">
+                        <span class="font-bold">TGMS Pegadapally</span>
+                        <span>🇮🇳 Satyameva Jayate</span>
+                    </div>
+                </div>
+
+            </div>
+                      <!-- LOGIN SECTION -->
+            <section id="loginSection" class="max-w-md mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+                <div class="bg-teal-950 text-white p-8 text-center relative">
+                    <div class="absolute top-3 right-4 text-teal-800 text-3xl opacity-30"><i class="fa-solid fa-lock"></i></div>
+                    <h3 class="text-2xl font-black">Secure Portal Login</h3>
+                    <p class="text-xs text-teal-300 mt-1">Select your designated access role</p>
+                </div>
+                
+                <div class="p-8">
+                    <div class="flex bg-slate-100 p-1.5 rounded-2xl mb-8 border">
+                        <button onclick="switchTab('student'); playSound('click')" id="tabStudent" class="flex-1 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-teal-950 bg-white shadow-sm transition">Student Portal</button>
+                        <button onclick="switchTab('admin'); playSound('click')" id="tabAdmin" class="flex-1 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-slate-500 transition">Admin Portal</button>
+                    </div>
+                                 <form id="studentLoginForm" onsubmit="handleStudentLogin(event)" class="space-y-5">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Student Full Name</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fa-solid fa-user"></i></span>
+                                <input type="text" id="studentNameInput" required placeholder="Type your full name" class="w-full pl-10 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none uppercase text-sm font-semibold">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Password</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fa-solid fa-key"></i></span>
+                                <input type="password" id="studentPasswordInput" required placeholder="Type your password" class="w-full pl-10 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none text-sm font-semibold">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-teal-800 to-teal-950 hover:from-teal-900 hover:to-slate-900 text-white font-extrabold py-3.5 rounded-xl transition shadow-lg transform hover:-translate-y-0.5">Login as Student</button>
+                                 </form>
+                                      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)" class="space-y-5 hidden">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Admin Username</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fa-solid fa-user-shield"></i></span>
+                                <input type="text" id="adminUsernameInput" required placeholder="Enter admin username" class="w-full pl-10 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none text-sm font-semibold">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Password</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fa-solid fa-lock"></i></span>
+                                <input type="password" id="adminPasswordInput" required placeholder="Enter admin password" class="w-full pl-10 pr-4 py-3 bg-slate-50 border rounded-xl focus:ring-2 focus:ring-teal-600 focus:outline-none text-sm font-semibold">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-950 text-white font-extrabold py-3.5 rounded-xl transition shadow-lg transform hover:-translate-y-0.5">Login as Administrator</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+              <!-- STUDENT PORTAL -->
+        <section id="studentPortal" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl shadow-xl p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border border-slate-200">
+                <div>
+                    <span class="bg-teal-100 text-teal-900 text-xs font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Student Dashboard</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-2" id="stdDisplayName">Welcome Student</h2>
+                    <p class="text-sm text-slate-600 mt-1 font-medium">Class: XI-A (MPC) | TSBIE Curriculum | Half-Yearly Examinations 2025-26</p>
+                </div>
+                <div>
+                    <button onclick="openReportCard(); playSound('success')" class="bg-gradient-to-r from-teal-800 to-teal-950 hover:from-teal-900 hover:to-slate-900 text-white px-6 py-3 rounded-2xl font-extrabold shadow-xl transition flex items-center gap-2 transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-file-arrow-down"></i> Download Official Memo
+                    </button>
+                </div>
+            </div>
+          
+            <!-- Metrics Cards including Live Rank -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="stdMetrics"></div>
+                     <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                <div class="bg-teal-950 text-white px-8 py-5 flex justify-between items-center">
+                    <h3 class="font-extrabold text-base sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-book-open text-amber-400"></i> Subject-wise Marks Breakdown (Total Max: 400)
+                    </h3>
+                    <span class="text-xs bg-teal-900 px-3.5 py-1.5 rounded-full border border-teal-700 font-bold">TSBIE Verified</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-700 border-b text-xs sm:text-sm font-bold uppercase tracking-wider">
+                                <th class="py-4 px-8">Subject Name</th>
+                                <th class="py-4 px-8">Maximum Marks</th>
+                                <th class="py-4 px-8">Marks Secured</th>
+                                <th class="py-4 px-8">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stdMarksTableBody" class="divide-y divide-slate-200 text-sm font-medium"></tbody>
+                    </table>
+                </div>
+                     </div>
+                      <div class="bg-white rounded-3xl shadow-xl p-8 border border-slate-200">
+                <h3 class="font-extrabold text-lg text-slate-900 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question text-amber-600"></i> Re-Correction Requests & Queries
+                </h3>
+                <p class="text-xs text-slate-500 mb-6">If you find any discrepancy in your memorandum marks, submit a re-correction ticket directly to administration.</p>
+                
+                <form onsubmit="submitQuery(event)" class="space-y-4 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Select Subject</label>
+                            <select id="querySubject" required class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-teal-600 text-sm font-semibold bg-slate-50">
+                                <option value="Telugu">Telugu (Max: 80)</option>
+                                <option value="English">English (Max: 80)</option>
+                                <option value="Maths A">Maths A (Max: 60)</option>
+                                <option value="Maths B">Maths B (Max: 60)</option>
+                                <option value="Physics">Physics (Max: 60)</option>
+                                <option value="Chemistry">Chemistry (Max: 60)</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Query / Reason for Re-Correction</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="queryText" required placeholder="e.g. Total calculation error..." class="flex-grow px-4 py-3 border rounded-xl focus:ring-2 focus:ring-teal-600 text-sm bg-slate-50 font-medium">
+                                <button type="submit" class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-xl font-extrabold transition shadow shrink-0 text-sm">Send Ticket</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="border-t pt-6">
+                    <h4 class="font-extrabold text-slate-900 mb-4 text-sm">Your Submitted Requests History</h4>
+                    <div id="studentQueriesList" class="space-y-3"></div>
+                </div>
+            </div>
+        </section>
+                <!-- ADMIN PORTAL -->
+        <section id="adminPortal" class="hidden space-y-8">
+            <div class="bg-white rounded-3xl shadow-xl p-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border border-slate-200">
+                <div>
+                    <span class="bg-slate-900 text-white text-xs font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Admin Dashboard</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-2">TGMS Pegadapally Administration</h2>
+                    <p class="text-sm text-slate-600 mt-1 font-medium">Manage student accounts, master marks, top performers, and database backups.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <label class="bg-teal-800 hover:bg-teal-900 text-white px-5 py-3 rounded-xl font-extrabold shadow-lg cursor-pointer transition flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-file-excel"></i> Upload Excel
+                        <input type="file" id="excelUpload" accept=".xlsx, .xls, .csv" onchange="handleExcelUpload(event)" class="hidden">
+                    </label>
+                    <button onclick="exportMarksExcel(); playSound('click')" class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-3 rounded-xl font-extrabold shadow-lg transition flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-download"></i> Export All
+                    </button>
+                    <button onclick="backupDatabase(); playSound('click')" class="bg-indigo-700 hover:bg-indigo-800 text-white px-5 py-3 rounded-xl font-extrabold shadow-lg transition flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-database"></i> Backup JSON
+                    </button>
+                    <label class="bg-emerald-700 hover:bg-emerald-800 text-white px-5 py-3 rounded-xl font-extrabold shadow-lg cursor-pointer transition flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-upload"></i> Restore JSON
+                        <input type="file" id="jsonRestoreInput" accept=".json" onchange="restoreDatabase(event)" class="hidden">
+                    </label>
+                </div>
+            </div>
+                        <!-- Add Student Account Card -->
+            <div class="bg-white rounded-3xl shadow-xl p-8 border border-slate-200">
+                <h3 class="font-extrabold text-base text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus text-teal-700 text-lg"></i> Add New Student Account
+                </h3>
+                <form onsubmit="addNewStudent(event)" class="grid grid-cols-1 md:grid-cols-3 gap-5 items-end">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Student Full Name</label>
+                        <input type="text" id="newStudentName" required placeholder="e.g. KUMAR RAJU" class="w-full px-4 py-3 bg-slate-50 border rounded-xl text-sm uppercase font-semibold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Student Password (Default: tgms2026)</label>
+                        <input type="text" id="newStudentPass" required value="tgms2026" class="w-full px-4 py-3 bg-slate-50 border rounded-xl text-sm font-semibold">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-teal-800 hover:bg-teal-900 text-white font-extrabold py-3 px-4 rounded-xl transition text-sm shadow-md">Create Student Account</button>
+                    </div>
+                </form>
+            </div>
+                        <!-- Grade Distribution Visual Chart Card -->
+            <div class="bg-white rounded-3xl shadow-xl p-8 border border-slate-200 space-y-5">
+                <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-column text-teal-700 text-lg"></i> Class Grade Distribution Analytics
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 text-center" id="gradeChartContainer"></div>
+            </div>
+                        <!-- Top 15 Performers Leaderboard Card -->
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                <div class="bg-amber-600 text-white px-8 py-5 flex justify-between items-center">
+                    <h3 class="font-extrabold text-base sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-trophy"></i> Top 15 Performers Leaderboard
+                    </h3>
+                    <button onclick="exportTop15Excel(); playSound('click')" class="bg-white text-amber-900 hover:bg-amber-100 px-4 py-2 rounded-xl text-xs font-extrabold transition shadow flex items-center gap-2">
+                        <i class="fa-solid fa-file-excel"></i> Export Top 15 to Excel
+                    </button>
+                </div>
+                <div class="p-6 overflow-x-auto max-h-72">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 border-b text-xs font-bold uppercase tracking-wider">
+                                <th class="py-3 px-4">Rank</th>
+                                <th class="py-3 px-4">Student Name</th>
+                                <th class="py-3 px-4">Telugu (80)</th>
+                                <th class="py-3 px-4">English (80)</th>
+                                <th class="py-3 px-4">Maths A (60)</th>
+                                <th class="py-3 px-4">Maths B (60)</th>
+                                <th class="py-3 px-4">Physics (60)</th>
+                                <th class="py-3 px-4">Chemistry (60)</th>
+                                <th class="py-3 px-4">Total (400)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top15TableBody" class="divide-y divide-slate-200 font-medium"></tbody>
+                    </table>
+                </div>
+            </div>
+                        <!-- Admin Security Settings -->
+            <div class="bg-white rounded-3xl shadow-xl p-8 border border-slate-200">
+                <h3 class="font-extrabold text-base text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-gear text-slate-700 text-lg"></i> Admin Security Settings
+                </h3>
+                <form onsubmit="updateAdminCredentials(event)" class="grid grid-cols-1 md:grid-cols-3 gap-5 items-end">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">New Admin Username</label>
+                        <input type="text" id="newAdminUser" required class="w-full px-4 py-3 bg-slate-50 border rounded-xl text-sm font-semibold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">New Admin Password</label>
+                        <input type="password" id="newAdminPass" required class="w-full px-4 py-3 bg-slate-50 border rounded-xl text-sm font-semibold">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-950 text-white font-extrabold py-3 px-4 rounded-xl transition text-sm shadow-md">Update Credentials</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-3xl shadow-xl border-l-4 border-teal-600 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Total Students</p>
+                        <h3 class="text-3xl font-black text-slate-900 mt-1" id="adminTotalStudents">41</h3>
+                    </div>
+                    <div class="text-teal-700 text-3xl"><i class="fa-solid fa-users"></i></div>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-xl border-l-4 border-amber-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Pending Queries</p>
+                        <h3 class="text-3xl font-black text-slate-900 mt-1" id="adminPendingQueries">0</h3>
+                    </div>
+                    <div class="text-amber-600 text-3xl"><i class="fa-solid fa-bell"></i></div>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-xl border-l-4 border-indigo-600 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Total Max Marks</p>
+                        <h3 class="text-3xl font-black text-slate-900 mt-1">400</h3>
+                    </div>
+                    <div class="text-indigo-600 text-3xl"><i class="fa-solid fa-book-bookmark"></i></div>
+                </div>
+            </div>
+                        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                <div class="bg-amber-600 text-white px-8 py-5 flex justify-between items-center">
+                    <h3 class="font-extrabold text-base sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-circle-exclamation"></i> Student Re-Correction Requests & Tickets
+                    </h3>
+                    <span class="text-xs bg-amber-700 px-3.5 py-1.5 rounded-full font-bold">Action Required</span>
+                </div>
+                <div class="p-8">
+                    <div id="adminQueriesContainer" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                <div class="bg-slate-800 text-white px-8 py-5">
+                    <h3 class="font-extrabold text-base flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left"></i> Admin Action Audit Trail</h3>
+                </div>
+                <div class="p-8 max-h-48 overflow-y-auto">
+                    <div id="adminAuditLogContainer" class="space-y-2 text-xs text-slate-600 font-mono">
+                        <p class="italic text-slate-400 font-sans">No actions recorded yet.</p>
+                    </div>
+                </div>
+            </div>
+                        <!-- Master Marks Editor Table with Search Bar & Remove Student Option -->
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                <div class="bg-slate-950 text-white px-8 py-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <h3 class="font-extrabold text-base sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-users-gear text-teal-400"></i> Master Marks Editor & Student Management
+                    </h3>
+                    <div class="w-full sm:w-80">
+                        <input type="text" id="adminSearchInput" oninput="renderAdminMasterTable()" placeholder="🔍 Search student by name..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 text-white border border-slate-800 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 font-medium">
+                    </div>
+                </div>
+                <div class="overflow-x-auto max-h-[500px]">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="sticky top-0 bg-slate-100 text-slate-700 text-xs uppercase z-10 font-bold tracking-wider">
+                            <tr>
+                                <th class="py-3.5 px-4 border-b">Student Full Name</th>
+                                <th class="py-3.5 px-4 border-b">Telugu (80)</th>
+                                <th class="py-3.5 px-4 border-b">English (80)</th>
+                                <th class="py-3.5 px-4 border-b">Maths A (60)</th>
+                                <th class="py-3.5 px-4 border-b">Maths B (60)</th>
+                                <th class="py-3.5 px-4 border-b">Physics (60)</th>
+                                <th class="py-3.5 px-4 border-b">Chemistry (60)</th>
+                                <th class="py-3.5 px-4 border-b">Total (400)</th>
+                                <th class="py-3.5 px-4 border-b">Grade</th>
+                                <th class="py-3.5 px-4 border-b text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminMasterTableBody" class="divide-y divide-slate-200 text-sm font-medium"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+        <!-- OFFICIAL MEMO REPORT CARD MODAL -->
+    <div id="reportCardModal" class="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm">
+        <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh]">
+            
+            <div class="bg-slate-950 text-white px-8 py-4 flex justify-between items-center no-print border-b border-slate-800">
+                <h3 class="font-extrabold text-sm sm:text-base flex items-center gap-2">
+                    <i class="fa-solid fa-certificate text-amber-400"></i> Official Memo Preview &mdash; TSBIE Pegadapally
+                </h3>
+                <div class="flex gap-2.5">
+                    <button onclick="window.print(); playSound('click')" class="bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center gap-2 shadow">
+                        <i class="fa-solid fa-print"></i> Print / PDF
+                    </button>
+                    <button onclick="shareOnWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center gap-2 shadow">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Share
+                    </button>
+                    <button onclick="closeReportCard()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-xs sm:text-sm transition">
+                        <i class="fa-solid fa-xmark"></i> Close
+                    </button>
+                </div>
+            </div>
+                        <!-- Professional Memo Card Body -->
+            <div class="p-6 sm:p-12 overflow-y-auto space-y-6 bg-white text-slate-900 border-8 border-teal-950 m-3 rounded-2xl shadow-inner" id="printableCardContent">
+                
+                <!-- Board Header with Emblem -->
+                <div class="border-b-2 border-teal-950 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="border-2 border-teal-950 p-2.5 text-center rounded-2xl bg-teal-50 w-28 flex-shrink-0 shadow-sm">
+                        <div class="text-[9px] font-black text-teal-950 leading-tight tracking-wider">TELANGANA</div>
+                        <div class="text-2xl my-1">🦁🏛️</div>
+                        <div class="text-[7px] font-bold text-slate-600 tracking-tighter">Satyameva Jayate</div>
+                    </div>
+                    <div class="text-center flex-grow">
+                        <h2 class="text-base sm:text-xl font-black text-teal-950 tracking-wider">TELANGANA BOARD OF INTERMEDIATE EDUCATION</h2>
+                        <h3 class="text-sm font-extrabold text-slate-800 tracking-wide mt-0.5">TGMS PEGADAPALLY, JAGTIAL DISTRICT</h3>
+                        <div class="mt-2.5 inline-block bg-teal-950 text-white py-1.5 px-5 rounded-xl text-xs font-black tracking-wider uppercase shadow">
+                            Half-Yearly Examination Memorandum of Marks (2025 &mdash; 2026)
+                        </div>
+                    </div>
+                    <div class="w-28 text-right text-[11px] text-slate-600 font-mono font-bold leading-tight">
+                        TSBIE/2026/XI-A<br>REG NO: 4963<br>CODE: 2026
+                    </div>
+                </div>
+                             <!-- Student Details Grid -->
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-[11px] text-slate-500 font-bold uppercase tracking-wider block">Student Name:</span>
+                        <strong id="rcStudentName" class="text-slate-950 uppercase font-black text-sm tracking-wide"></strong>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-slate-500 font-bold uppercase tracking-wider block">Class & Stream:</span>
+                        <strong class="text-slate-950 font-extrabold">Class XI - A (MPC)</strong>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-slate-500 font-bold uppercase tracking-wider block">Academic Year:</span>
+                        <strong class="text-slate-950 font-extrabold">2025 - 2026</strong>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-slate-500 font-bold uppercase tracking-wider block">Live Class Rank:</span>
+                        <strong id="rcStudentRank" class="text-teal-900 font-black text-base">#1 out of 41</strong>
+                    </div>
+                </div>
+                              <!-- Marks Memo Table -->
+                <table class="w-full text-left border-collapse border border-slate-400 text-sm">
+                    <thead>
+                        <tr class="bg-teal-950 text-white text-xs sm:text-sm font-bold uppercase tracking-wider">
+                            <th class="border border-slate-400 py-3 px-4">Subject Name</th>
+                            <th class="border border-slate-400 py-3 px-4 text-center">Max Marks</th>
+                            <th class="border border-slate-400 py-3 px-4 text-center">Marks Secured</th>
+                            <th class="border border-slate-400 py-3 px-4 text-center">Grade / Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rcMarksTable" class="font-medium"></tbody>
+                    <tfoot>
+                        <tr class="bg-slate-100 font-extrabold text-sm">
+                            <td class="border border-slate-400 py-3.5 px-4 text-right">TOTAL (Out of 400):</td>
+                            <td class="border border-slate-400 py-3.5 px-4 text-center font-black">400</td>
+                            <td class="border border-slate-400 py-3.5 px-4 text-center text-teal-950 text-base font-black" id="rcTotalMarks">0</td>
+                            <td class="border border-slate-400 py-3.5 px-4 text-center text-teal-950 text-base font-black" id="rcOverallGrade">-</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs text-slate-600">
+                    <div>
+                        <p class="font-extrabold text-slate-800 mb-1">Grading Scale (TSBIE Standard):</p>
+                        <p>A+ (90%+) | A (80%-89%) | B+ (70%-79%) | B (60%-69%) | C (50%-59%) | D (40%-49%) | F (Fail) | N/A (Absent)</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-sm font-semibold">Percentage: <strong id="rcPercentage" class="text-teal-950 text-base font-black">0%</strong></span>
+                    </div>
+                </div>
+                               <!-- Professional Digital Signatures: Prabhakar Reddy Kotha & Class Teacher Krishna -->
+                <div class="pt-8 flex justify-between items-end mt-12">
+                    <div class="text-center">
+                        <div class="font-serif italic text-teal-900 font-bold text-lg mb-1">Krishna</div>
+                        <div class="w-40 border-b-2 border-slate-400 mb-1"></div>
+                        <span class="text-xs text-slate-900 font-black">Krishna</span>
+                        <span class="block text-[10px] text-slate-500 font-bold">Class Teacher (XI-A MPC)</span>
+                    </div>
+                    
+                    <!-- Official Memo Stamp -->
+                    <div class="text-center border-4 border-dashed border-teal-800 p-3 rounded-full w-32 h-32 flex flex-col items-center justify-center bg-teal-50/60 rotate-[-5deg] shadow-sm">
+                        <span class="text-[8px] font-black text-teal-950 leading-tight">TSBIE PEGADAPALLY</span>
+                        <span class="text-[8px] font-bold text-teal-900">EXAM BRANCH</span>
+                        <div class="text-[10px] my-0.5">⭐ OFFICIAL ⭐</div>
+                        <span class="text-[7px] text-slate-600">MEMORANDUM</span>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="font-serif italic text-teal-900 font-bold text-xl mb-1">Prabhakar Reddy Kotha</div>
+                        <div class="w-48 border-b-2 border-slate-400 mb-1"></div>
+                        <span class="text-xs text-slate-900 font-black">Prabhakar Reddy Kotha</span>
+                        <span class="block text-[10px] text-slate-500 font-bold">Principal, TGMS Pegadapally</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+        <!-- Application Script -->
+    <script>
+        // Web Audio API Sound Synthesizer for Interactive Cues
+        function playSound(type) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                } else if (type === 'success') {
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (type === 'error') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15);
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                }
+            } catch(e) { console.log('Audio not supported or blocked'); }
+        }
+              const initialStudentsData = [
+            { name: "ADIGOPPULA HARIKA", password: "tgms2026", Telugu: 60, English: 51, "Maths A": 54, "Maths B": 30, Physics: 21, Chemistry: "" },
+            { name: "AJMIRA KEERTANA", password: "tgms2026", Telugu: 61, English: 58, "Maths A": 54, "Maths B": 27, Physics: 31, Chemistry: 35 },
+            { name: "ARE SRIJA", password: "tgms2026", Telugu: 76, English: "", "Maths A": 56, "Maths B": 39, Physics: 47, Chemistry: 47 },
+            { name: "BADINENI SHIVA SAI", password: "tgms2026", Telugu: 52, English: 59, "Maths A": 26, "Maths B": 40, Physics: 38, Chemistry: 40 },
+            { name: "BANOTHU HARSHA", password: "tgms2026", Telugu: 37, English: "", "Maths A": "N/A", "Maths B": "N/A", Physics: "", Chemistry: "N/A" },
+            { name: "BATHINI CHARAN", password: "tgms2026", Telugu: 54, English: 64, "Maths A": 40, "Maths B": 40, Physics: 41, Chemistry: 42 },
+            { name: "BIYALA SAI NARSIMHA RAO", password: "tgms2026", Telugu: 78, English: 74, "Maths A": 60, "Maths B": 60, Physics: 60, Chemistry: 56 },
+            { name: "BUSA SAMANVI", password: "tgms2026", Telugu: 69, English: 57, "Maths A": 53, "Maths B": 26, Physics: 42, Chemistry: 42 },
+            { name: "DOMMATI VAMSHI", password: "tgms2026", Telugu: 57, English: 47, "Maths A": 28, "Maths B": 37, Physics: 33, Chemistry: 26 },
+            { name: "DOODAM MAHALAXMI", password: "tgms2026", Telugu: 56, English: 60, "Maths A": 58, "Maths B": 26, Physics: 45, Chemistry: 43 },
+            { name: "ELLENKI SATHWIKA", password: "tgms2026", Telugu: 61, English: "", "Maths A": 39, "Maths B": 23, Physics: 35, Chemistry: 25 },
+            { name: "GAJURAVENI MAHESHWARI", password: "tgms2026", Telugu: 74, English: 55, "Maths A": 49, "Maths B": 24, Physics: 28, Chemistry: 32 },
+            { name: "GANANTHULA NITHISHA", password: "tgms2026", Telugu: 60, English: 53, "Maths A": 52, "Maths B": 30, Physics: 32, Chemistry: 22 },
+            { name: "GANNAVENI PALLAVI", password: "tgms2026", Telugu: 56, English: 53, "Maths A": 46, "Maths B": 25, Physics: "", Chemistry: "" },
+            { name: "GUDURI SIRI", password: "tgms2026", Telugu: 77, English: 66, "Maths A": 54, "Maths B": 42, Physics: 49, Chemistry: 49 },
+            { name: "GUNDAVENI LAYA", password: "tgms2026", Telugu: 37, English: "", "Maths A": 55, "Maths B": 22, Physics: 31, Chemistry: 21 },
+            { name: "JAKKULA SRIKANTH", password: "tgms2026", Telugu: 56, English: 68, "Maths A": 25, "Maths B": 36, Physics: 33, Chemistry: 23 },
+            { name: "JITTAVENI SRI LEKHA", password: "tgms2026", Telugu: 55, English: "", "Maths A": 53, "Maths B": 24, Physics: 37, Chemistry: 21 },
+            { name: "KALWALA SALONI", password: "tgms2026", Telugu: 51, English: 69, "Maths A": 55, "Maths B": 35, Physics: 33, Chemistry: 34 },
+            { name: "KANDI VAISHNAVI", password: "tgms2026", Telugu: 43, English: "", "Maths A": 40, "Maths B": 34, Physics: 30, Chemistry: 30 },
+            { name: "KANDI YOGESH", password: "tgms2026", Telugu: 58, English: 44, "Maths A": 25, "Maths B": 41, Physics: 38, Chemistry: 45 },
+            { name: "KATLA DINESH", password: "tgms2026", Telugu: 75, English: 70, "Maths A": 47, "Maths B": 41, Physics: 51, Chemistry: 48 },
+            { name: "KEDAM SUKUMAR", password: "tgms2026", Telugu: 68, English: 51, "Maths A": 41, "Maths B": 35, Physics: 35, Chemistry: 47 },
+            { name: "KOLIPAKA KAMALAKAR", password: "tgms2026", Telugu: 52, English: 52, "Maths A": 22, "Maths B": 28, Physics: 41, Chemistry: 40 },
+            { name: "KOTHA SRUTHIKA", password: "tgms2026", Telugu: 61, English: 69, "Maths A": 53, "Maths B": 39, Physics: 39, Chemistry: 41 },
+            { name: "KUNCHE ASHWITH", password: "tgms2026", Telugu: 44, English: 44, "Maths A": 24, "Maths B": 31, Physics: 43, Chemistry: 37 },
+            { name: "MATETI MYTHRI", password: "tgms2026", Telugu: 78, English: "", "Maths A": 53, "Maths B": 35, Physics: 39, Chemistry: 42 },
+            { name: "NAGAM MADHAVI", password: "tgms2026", Telugu: 41, English: 46, "Maths A": 43, "Maths B": 13, Physics: 28, Chemistry: 23 },
+            { name: "NALUVALA JYOTHI", password: "tgms2026", Telugu: 65, English: 51, "Maths A": "N/A", "Maths B": 17, Physics: 36, Chemistry: 26 },
+            { name: "NAMPALLY SAHITHI", password: "tgms2026", Telugu: 44, English: 50, "Maths A": 45, "Maths B": 30, Physics: 41, Chemistry: 27 },
+            { name: "NAREDLA SAI REDDY", password: "tgms2026", Telugu: 34, English: 43, "Maths A": 28, "Maths B": 32, Physics: 39, Chemistry: 35 },
+            { name: "PALUMARU VARSHINI", password: "tgms2026", Telugu: 73, English: 57, "Maths A": 53, "Maths B": 39, Physics: 41, Chemistry: 41 },
+            { name: "POTHUGANTI SUPRIYA", password: "tgms2026", Telugu: 24, English: 51, "Maths A": 34, "Maths B": 14, Physics: 17, Chemistry: "" },
+            { name: "RACHAKONDA RAMADASU", password: "tgms2026", Telugu: 44, English: "", "Maths A": 21, "Maths B": 36, Physics: "", Chemistry: 29 },
+            { name: "RAGALLA SIDDESH", password: "tgms2026", Telugu: 53, English: "", "Maths A": 24, "Maths B": 33, Physics: 31, Chemistry: 39 },
+            { name: "RANGU JASHWANTH", password: "tgms2026", Telugu: 75, English: "", "Maths A": 22, "Maths B": 31, Physics: 33, Chemistry: 42 },
+            { name: "THOTLA AMULYA", password: "tgms2026", Telugu: 75, English: 51, "Maths A": 36, "Maths B": 41, Physics: 39, Chemistry: 35 },
+            { name: "VARALA RISHIKA", password: "tgms2026", Telugu: 58, English: 51, "Maths A": 37, "Maths B": 41, Physics: 41, Chemistry: 35 },
+            { name: "VARALA SATHWIKA", password: "tgms2026", Telugu: 68, English: 52, "Maths A": 45, "Maths B": 41, Physics: 41, Chemistry: 37 },
+            { name: "VENGALAPURAM RAJU", password: "tgms2026", Telugu: 75, English: "", "Maths A": 43, "Maths B": 34, Physics: "", Chemistry: "39" },
+            { name: "KUMAR RAJU", password: "tgms2026", Telugu: "", English: "", "Maths A": "", "Maths B": "", Physics: "", Chemistry: "" }
+        ];
+              let students = JSON.parse(localStorage.getItem('pm_students')) || initialStudentsData;
+        let queries = JSON.parse(localStorage.getItem('pm_queries')) || [];
+        let auditLogs = JSON.parse(localStorage.getItem('pm_audit_logs')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('pm_current_user')) || null;
+        let adminCreds = JSON.parse(localStorage.getItem('pm_admin_creds')) || { user: 'tgmspgpl', pass: 'tgms@2027' };
+
+        const subjectsConfig = {
+            "Telugu": 80,
+            "English": 80,
+            "Maths A": 60,
+            "Maths B": 60,
+            "Physics": 60,
+            "Chemistry": 60
+        };
+        const subjectsList = Object.keys(subjectsConfig);
+
+        function saveData() {
+            localStorage.setItem('pm_students', JSON.stringify(students));
+            localStorage.setItem('pm_queries', JSON.stringify(queries));
+            localStorage.setItem('pm_audit_logs', JSON.stringify(auditLogs));
+            localStorage.setItem('pm_current_user', JSON.stringify(currentUser));
+            localStorage.setItem('pm_admin_creds', JSON.stringify(adminCreds));
+        }
+
+        function logAudit(action) {
+            const timeStr = new Date().toLocaleString();
+            auditLogs.unshift(`[${timeStr}] ${action}`);
+            if (auditLogs.length > 50) auditLogs.pop();
+            saveData();
+        }
+              function switchTab(role) {
+            const tabStudent = document.getElementById('tabStudent');
+            const tabAdmin = document.getElementById('tabAdmin');
+            const studentForm = document.getElementById('studentLoginForm');
+            const adminForm = document.getElementById('adminLoginForm');
+
+            if (role === 'student') {
+                tabStudent.className = "flex-1 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-teal-950 bg-white shadow-sm transition";
+                tabAdmin.className = "flex-1 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-slate-500 transition";
+                studentForm.classList.remove('hidden');
+                adminForm.classList.add('hidden');
+            } else {
+                tabAdmin.className = "flex-1 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-teal-950 bg-white shadow-sm transition";
+                tabStudent.className = "flex-1 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-slate-500 transition";
+                adminForm.classList.remove('hidden');
+                studentForm.classList.add('hidden');
+            }
+        }
+
+        function scrollToLogin(role) {
+            switchTab(role);
+            document.getElementById('loginSection').scrollIntoView({ behavior: 'smooth' });
+        }
+              function handleStudentLogin(e) {
+            e.preventDefault();
+            const name = document.getElementById('studentNameInput').value.trim().toUpperCase();
+            const pass = document.getElementById('studentPasswordInput').value;
+
+            const student = students.find(s => s.name.toUpperCase() === name);
+            if (!student) {
+                playSound('error');
+                alert("Student name not found in database.");
+                return;
+            }
+
+            const studentPass = student.password || "tgms2026";
+            if (pass !== studentPass) {
+                playSound('error');
+                alert("Incorrect password!");
+                return;
+            }
+
+            currentUser = { role: 'student', name: student.name };
+            playSound('success');
+            logAudit(`Student logged in: ${student.name}`);
+            saveData();
+            renderApp();
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUsernameInput').value;
+            const pass = document.getElementById('adminPasswordInput').value;
+
+            if (user === adminCreds.user && pass === adminCreds.pass) {
+                currentUser = { role: 'admin', name: "Administrator" };
+                playSound('success');
+                logAudit(`Admin logged in successfully.`);
+                saveData();
+                renderApp();
+            } else {
+                playSound('error');
+                alert("Invalid Admin credentials!");
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            saveData();
+            renderApp();
+        }
+
+        function addNewStudent(e) {
+            e.preventDefault();
+            const name = document.getElementById('newStudentName').value.trim().toUpperCase();
+            const pass = document.getElementById('newStudentPass').value.trim() || "tgms2026";
+            if (!name) return;
+
+            if (students.some(s => s.name === name)) {
+                playSound('error');
+                alert("Student already exists in database!");
+                return;
+            }
+
+            const newStudent = { name: name, password: pass, Telugu: "", English: "", "Maths A": "", "Maths B": "", Physics: "", Chemistry: "" };
+            students.push(newStudent);
+            playSound('success');
+            logAudit(`Admin created new student account: ${name}`);
+            saveData();
+            document.getElementById('newStudentName').value = '';
+            document.getElementById('newStudentPass').value = 'tgms2026';
+            alert(`Student account for ${name} created successfully!`);
+            renderAdminPortal();
+        }
+
+        function removeStudent(index) {
+            const studentName = students[index].name;
+            if (confirm(`Are you sure you want to remove ${studentName} from the database?`)) {
+                students.splice(index, 1);
+                playSound('success');
+                logAudit(`Admin removed student: ${studentName}`);
+                saveData();
+                renderAdminPortal();
+            }
+        }
+              function fnCalculateTotals(student) {
+            let total = 0;
+            let maxTotal = 400;
+            subjectsList.forEach(sub => {
+                const val = student[sub];
+                if (val !== "" && val !== undefined && val !== "N/A" && val !== "n/a" && val !== "F" && val !== "f") {
+                    total += Number(val) || 0;
+                }
+            });
+            const percentage = (total / maxTotal) * 100;
+            
+            let hasFailed = subjectsList.some(sub => {
+                const val = student[sub];
+                return val === "F" || val === "f";
+            });
+
+            let grade = 'E';
+            if (hasFailed) grade = 'F (Fail)';
+            else if (percentage >= 90) grade = 'A+';
+            else if (percentage >= 80) grade = 'A';
+            else if (percentage >= 70) grade = 'B+';
+            else if (percentage >= 60) grade = 'B';
+            else if (percentage >= 50) grade = 'C';
+            else if (percentage >= 40) grade = 'D';
+
+            return { total, maxTotal, percentage: percentage.toFixed(1), grade };
+        }
+
+        function getStudentLiveRank(studentName) {
+            const sorted = [...students].map(s => {
+                const { total } = fnCalculateTotals(s);
+                return { name: s.name, total };
+            }).sort((a, b) => b.total - a.total);
+
+            const rank = sorted.findIndex(s => s.name === studentName) + 1;
+            return rank > 0 ? `#${rank} out of ${students.length}` : 'N/A';
+        }
+
+        function renderApp() {
+            const publicLanding = document.getElementById('publicLandingView');
+            const studentPortal = document.getElementById('studentPortal');
+            const adminPortal = document.getElementById('adminPortal');
+            const navBadge = document.getElementById('navUserBadge');
+            const welcomeUser = document.getElementById('welcomeUser');
+
+            if (!currentUser) {
+                publicLanding.classList.remove('hidden');
+                studentPortal.classList.add('hidden');
+                adminPortal.classList.add('hidden');
+                navBadge.classList.add('hidden');
+                return;
+            }
+
+            publicLanding.classList.add('hidden');
+            navBadge.classList.remove('hidden');
+            welcomeUser.innerText = `Logged in as: ${currentUser.name}`;
+
+            if (currentUser.role === 'student') {
+                studentPortal.classList.remove('hidden');
+                adminPortal.classList.add('hidden');
+                renderStudentPortal();
+            } else {
+                studentPortal.classList.add('hidden');
+                adminPortal.classList.remove('hidden');
+                renderAdminPortal();
+            }
+      }
+              function renderStudentPortal() {
+            const student = students.find(s => s.name === currentUser.name);
+            if (!student) return;
+
+            document.getElementById('stdDisplayName').innerText = `Welcome, ${student.name}`;
+            const { total, maxTotal, percentage, grade } = fnCalculateTotals(student);
+            const liveRank = getStudentLiveRank(student.name);
+
+            const metricsDiv = document.getElementById('stdMetrics');
+            metricsDiv.innerHTML = `
+                <div class="bg-white p-6 rounded-3xl shadow-xl border-l-4 border-teal-600">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Total Marks Obtained</p>
+                    <h3 class="text-3xl font-black text-slate-900 mt-1">${total} <span class="text-sm font-normal text-slate-500">/ ${maxTotal}</span></h3>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-xl border-l-4 border-amber-500">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Live Class Rank</p>
+                    <h3 class="text-3xl font-black text-amber-700 mt-1">${liveRank}</h3>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-xl border-l-4 border-blue-600">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Overall Percentage</p>
+                    <h3 class="text-3xl font-black text-slate-900 mt-1">${percentage}%</h3>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-xl border-l-4 border-purple-600">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Assigned Grade</p>
+                    <h3 class="text-3xl font-black text-teal-900 mt-1">${grade}</h3>
+                </div>
+            `;
+
+            const tbody = document.getElementById('stdMarksTableBody');
+            tbody.innerHTML = '';
+            subjectsList.forEach(sub => {
+                const val = student[sub];
+                let marksDisplay = val;
+                let statusBadge = '<span class="bg-teal-100 text-teal-950 px-3 py-1 rounded-full font-bold">Verified</span>';
+
+                if (val === "" || val === undefined) {
+                    marksDisplay = '<span class="text-slate-400 italic">Not Entered</span>';
+                    statusBadge = '<span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-bold">Pending</span>';
+                } else if (val === "N/A" || val === "n/a") {
+                    marksDisplay = 'Absent';
+                    statusBadge = '<span class="bg-red-100 text-red-800 px-3 py-1 rounded-full font-bold">Absent (N/A)</span>';
+                } else if (val === "F" || val === "f") {
+                    marksDisplay = '0 (Failed)';
+                    statusBadge = '<span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full font-bold">Fail (F)</span>';
+                }
+                
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-4 px-8 font-semibold text-slate-900">${sub}</td>
+                        <td class="py-4 px-8 text-slate-500 font-medium">${subjectsConfig[sub]}</td>
+                        <td class="py-4 px-8 font-extrabold text-teal-950">${marksDisplay}</td>
+                        <td class="py-4 px-8 text-xs">${statusBadge}</td>
+                    </tr>
+                `;
+            });
+
+            renderStudentQueries();
+        }
+
+        function submitQuery(e) {
+            e.preventDefault();
+            const subject = document.getElementById('querySubject').value;
+            const text = document.getElementById('queryText').value;
+
+            queries.push({
+                id: Date.now(),
+                studentName: currentUser.name,
+                subject: subject,
+                text: text,
+                status: 'Pending',
+                adminResponse: ''
+            });
+
+            playSound('success');
+            logAudit(`Re-correction request sent by ${currentUser.name} for ${subject}`);
+            saveData();
+            document.getElementById('queryText').value = '';
+            alert("Re-correction request submitted successfully!");
+            renderStudentQueries();
+        }
+
+        function renderStudentQueries() {
+            const listDiv = document.getElementById('studentQueriesList');
+            const userQueries = queries.filter(q => q.studentName === currentUser.name);
+
+            if (userQueries.length === 0) {
+                listDiv.innerHTML = `<p class="text-sm text-slate-500 italic">No re-correction requests submitted yet.</p>`;
+                return;
+            }
+
+            listDiv.innerHTML = userQueries.map(q => `
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                    <div>
+                        <span class="font-bold text-slate-950">${q.subject}:</span> ${q.text}
+                        <div class="text-xs text-slate-500 mt-1">Status: <span class="font-bold ${q.status.includes('Resolved') ? 'text-teal-700' : 'text-amber-600'}">${q.status}</span></div>
+                        ${q.adminResponse ? `<div class="text-xs text-teal-950 mt-1 bg-teal-50 p-2 rounded-xl border border-teal-200"><strong>Admin Note:</strong> ${q.adminResponse}</div>` : ''}
+                    </div>
+                    <span class="text-xs bg-amber-100 text-amber-950 px-3.5 py-1 rounded-full font-bold shrink-0">${q.status}</span>
+                </div>
+            `).join('');
+      }
+              function renderAdminPortal() {
+            document.getElementById('adminTotalStudents').innerText = students.length;
+            document.getElementById('adminPendingQueries').innerText = queries.filter(q => q.status === 'Pending').length;
+            document.getElementById('newAdminUser').value = adminCreds.user;
+            document.getElementById('newAdminPass').value = adminCreds.pass;
+
+            const gradeCounts = { 'A+': 0, 'A': 0, 'B+': 0, 'B': 0, 'C': 0, 'D': 0, 'F (Fail)': 0 };
+            students.forEach(s => {
+                const { grade } = fnCalculateTotals(s);
+                if (gradeCounts[grade] !== undefined) gradeCounts[grade]++;
+            });
+
+            const chartContainer = document.getElementById('gradeChartContainer');
+            chartContainer.innerHTML = Object.entries(gradeCounts).map(([g, count]) => `
+                <div class="bg-slate-50 p-4 rounded-2xl border flex flex-col items-center justify-center">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Grade ${g}</span>
+                    <span class="text-2xl font-black text-teal-900 mt-1">${count}</span>
+                    <span class="text-[10px] text-slate-400 mt-0.5">Students</span>
+                </div>
+            `).join('');
+
+            const sortedStudents = [...students].map(s => {
+                const { total } = fnCalculateTotals(s);
+                return { ...s, total };
+            }).sort((a, b) => b.total - a.total);
+
+            const top15 = sortedStudents.slice(0, 15);
+            const top15Body = document.getElementById('top15TableBody');
+            top15Body.innerHTML = '';
+            top15.forEach((st, idx) => {
+                top15Body.innerHTML += `
+                    <tr class="hover:bg-amber-50/50">
+                        <td class="py-3 px-4 font-black text-amber-700">#${idx + 1}</td>
+                        <td class="py-3 px-4 font-bold text-slate-900">${st.name}</td>
+                        <td class="py-3 px-4">${st.Telugu !== undefined ? st.Telugu : ''}</td>
+                        <td class="py-3 px-4">${st.English !== undefined ? st.English : ''}</td>
+                        <td class="py-3 px-4">${st["Maths A"] !== undefined ? st["Maths A"] : ''}</td>
+                        <td class="py-3 px-4">${st["Maths B"] !== undefined ? st["Maths B"] : ''}</td>
+                        <td class="py-3 px-4">${st.Physics !== undefined ? st.Physics : ''}</td>
+                        <td class="py-3 px-4">${st.Chemistry !== undefined ? st.Chemistry : ''}</td>
+                        <td class="py-3 px-4 font-black text-teal-900">${st.total} / 400</td>
+                    </tr>
+                `;
+            });
+
+            const auditDiv = document.getElementById('adminAuditLogContainer');
+            if (auditLogs.length === 0) {
+                auditDiv.innerHTML = `<p class="italic text-slate-400">No actions recorded yet.</p>`;
+            } else {
+                auditDiv.innerHTML = auditLogs.map(log => `<div>• ${log}</div>`).join('');
+            }
+
+            const qContainer = document.getElementById('adminQueriesContainer');
+            const pendingQueries = queries.filter(q => q.status === 'Pending');
+            if (pendingQueries.length === 0) {
+                qContainer.innerHTML = `<p class="text-sm text-slate-500 italic">No pending re-correction queries.</p>`;
+            } else {
+                qContainer.innerHTML = pendingQueries.map(q => `
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-950 text-base">${q.studentName}</span>
+                                <span class="text-xs bg-teal-100 text-teal-950 px-2.5 py-0.5 rounded font-bold">${q.subject}</span>
+                            </div>
+                            <p class="text-sm text-slate-700 mt-1">${q.text}</p>
+                        </div>
+                        <div class="flex items-center gap-2 w-full lg:w-auto">
+                            <input type="text" id="resp_${q.id}" placeholder="Resolution note..." class="px-3 py-2 border rounded-xl text-sm flex-grow">
+                            <button onclick="resolveQuery(${q.id}, true); playSound('success')" class="bg-teal-700 hover:bg-teal-800 text-white px-3 py-2 rounded-xl text-sm font-bold transition">Resolve</button>
+                            <button onclick="resolveQuery(${q.id}, false); playSound('click')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl text-sm font-bold transition">Reject</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderAdminMasterTable();
+        }
+
+        function renderAdminMasterTable() {
+            const searchTerm = document.getElementById('adminSearchInput').value.trim().toUpperCase();
+            const tbody = document.getElementById('adminMasterTableBody');
+            tbody.innerHTML = '';
+
+            students.forEach((s, sIdx) => {
+                if (searchTerm && !s.name.toUpperCase().includes(searchTerm)) {
+                    return;
+                }
+
+                const { total, grade } = fnCalculateTotals(s);
+                let rowHtml = `<tr class="hover:bg-slate-50">
+                    <td class="py-3 px-4 font-bold text-slate-950">${s.name}</td>`;
+                
+                subjectsList.forEach(sub => {
+                    const val = s[sub] !== undefined ? s[sub] : "";
+                    rowHtml += `<td class="py-3 px-4"><input type="text" value="${val}" onchange="updateStudentMark(${sIdx}, '${sub}', this.value)" class="w-20 px-2 py-1.5 border rounded-xl text-center font-bold text-slate-900 focus:ring-2 focus:ring-teal-600 text-sm" placeholder="mark, F, N/A"></td>`;
+                });
+
+                rowHtml += `
+                    <td class="py-3 px-4 font-black text-slate-900">${total}</td>
+                    <td class="py-3 px-4 font-black text-teal-950">${grade}</td>
+                    <td class="py-3 px-4 text-center">
+                        <button onclick="removeStudent(${sIdx})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3.5 py-1.5 rounded-xl text-xs font-bold transition shadow-sm">
+                            <i class="fa-solid fa-trash-can mr-1"></i> Remove
+                        </button>
+                    </td>
+                </tr>`;
+                tbody.innerHTML += rowHtml;
+            });
+      }
+              function updateStudentMark(studentIndex, subject, value) {
+            students[studentIndex][subject] = value.trim() === "" ? "" : (isNaN(value) ? value.toUpperCase() : Number(value));
+            playSound('click');
+            logAudit(`Admin updated ${subject} marks for ${students[studentIndex].name} to ${value}`);
+            saveData();
+            renderAdminPortal();
+        }
+
+        function resolveQuery(queryId, isApproved) {
+            const q = queries.find(item => item.id === queryId);
+            if (!q) return;
+
+            const respInput = document.getElementById(`resp_${queryId}`).value;
+            q.status = isApproved ? 'Resolved & Updated' : 'Rejected';
+            q.adminResponse = respInput || (isApproved ? 'Marks verified by admin.' : 'No change required.');
+
+            logAudit(`Query ${isApproved ? 'resolved' : 'rejected'} for ${q.studentName} (${q.subject})`);
+            saveData();
+            renderAdminPortal();
+        }
+
+        function updateAdminCredentials(e) {
+            e.preventDefault();
+            const u = document.getElementById('newAdminUser').value.trim();
+            const p = document.getElementById('newAdminPass').value;
+            if (u && p) {
+                adminCreds = { user: u, pass: p };
+                playSound('success');
+                logAudit(`Admin credentials updated.`);
+                saveData();
+                alert("Admin credentials updated successfully!");
+            }
+        }
+
+        function backupDatabase() {
+            const backupObj = { students, queries, auditLogs, adminCreds };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", "TSBIE_Pegadapally_Backup_2026.json");
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+            logAudit("Database JSON backup downloaded.");
+        }
+
+        function restoreDatabase(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const parsed = JSON.parse(evt.target.result);
+                    if (parsed.students) students = parsed.students;
+                    if (parsed.queries) queries = parsed.queries;
+                    if (parsed.auditLogs) auditLogs = parsed.auditLogs;
+                    if (parsed.adminCreds) adminCreds = parsed.adminCreds;
+                    playSound('success');
+                    logAudit("Database restored successfully from JSON backup.");
+                    saveData();
+                    renderAdminPortal();
+                    alert("Database restored successfully!");
+                } catch(err) {
+                    playSound('error');
+                    alert("Invalid JSON backup file format.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function handleExcelUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+                    playSound('success');
+                    alert("Excel uploaded successfully!");
+                    logAudit(`Excel master sheet uploaded (${file.name})`);
+                } catch(err) {
+                    playSound('error');
+                    alert("Error parsing Excel file.");
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function exportMarksExcel() {
+            const ws = XLSX.utils.json_to_sheet(students);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Class XI-A Marks");
+            XLSX.writeFile(wb, "TSBIE_Pegadapally_Marks_2026.xlsx");
+            logAudit("Exported all marks to Excel.");
+        }
+
+        function exportTop15Excel() {
+            const sortedStudents = [...students].map(s => {
+                const { total, grade, percentage } = fnCalculateTotals(s);
+                return { Name: s.name, Telugu: s.Telugu, English: s.English, "Maths A": s["Maths A"], "Maths B": s["Maths B"], Physics: s.Physics, Chemistry: s.Chemistry, Total: total, Percentage: percentage + "%", Grade: grade };
+            }).sort((a, b) => b.Total - a.Total);
+
+            const top15List = sortedStudents.slice(0, 15);
+            const ws = XLSX.utils.json_to_sheet(top15List);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Top 15 Performers");
+            XLSX.writeFile(wb, "TSBIE_Top_15_Performers_2026.xlsx");
+            logAudit("Exported Top 15 Performers to Excel.");
+      }
+              function shareOnWhatsApp() {
+            const student = students.find(s => s.name === currentUser.name);
+            if (!student) return;
+            const { total, percentage, grade } = fnCalculateTotals(student);
+            const liveRank = getStudentLiveRank(student.name);
+            const msg = `🎓 Telangana Board of Intermediate Education\nTGMS Pegadapally Half-Yearly Memo (2025-26)\n\nStudent: ${student.name}\nClass: XI-A (MPC)\nRank: ${liveRank}\nTotal Marks: ${total} / 400 (${percentage}%)\nOverall Grade: ${grade}`;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function openReportCard() {
+            const student = students.find(s => s.name === currentUser.name);
+            if (!student) return;
+
+            document.getElementById('rcStudentName').innerText = student.name;
+            document.getElementById('rcStudentRank').innerText = getStudentLiveRank(student.name);
+            const rcTable = document.getElementById('rcMarksTable');
+            rcTable.innerHTML = '';
+
+            let total = 0;
+            let maxTotal = 400;
+            subjectsList.forEach((sub, idx) => {
+                const val = student[sub];
+                let numMarks = (val !== "" && val !== undefined && val !== "N/A" && val !== "n/a" && val !== "F" && val !== "f") ? Number(val) : 0;
+                if (val !== "" && val !== undefined && val !== "N/A" && val !== "n/a" && val !== "F" && val !== "f") {
+                    total += numMarks;
+                }
+                
+                let displayVal = val;
+                let subGrade = 'E';
+
+                if (val === "" || val === undefined) {
+                    displayVal = '-';
+                    subGrade = 'Pending';
+                } else if (val === "N/A" || val === "n/a") {
+                    displayVal = 'Absent';
+                    subGrade = 'Absent';
+                } else if (val === "F" || val === "f") {
+                    displayVal = '0';
+                    subGrade = 'Fail (F)';
+                } else {
+                    const pct = (numMarks / subjectsConfig[sub]) * 100;
+                    if (pct >= 90) subGrade = 'A+';
+                    else if (pct >= 80) subGrade = 'A';
+                    else if (pct >= 70) subGrade = 'B+';
+                    else if (pct >= 60) subGrade = 'B';
+                    else if (pct >= 50) subGrade = 'C';
+                    else if (pct >= 40) subGrade = 'D';
+                }
+
+                rcTable.innerHTML += `
+                    <tr>
+                        <td class="border border-slate-400 py-3 px-4 font-semibold">${idx + 1}. ${sub}</td>
+                        <td class="border border-slate-400 py-3 px-4 text-center font-medium">${subjectsConfig[sub]}</td>
+                        <td class="border border-slate-400 py-3 px-4 text-center font-black">${displayVal}</td>
+                        <td class="border border-slate-400 py-3 px-4 text-center font-bold text-teal-950">${subGrade}</td>
+                    </tr>
+                `;
+            });
+
+            const { percentage, grade } = fnCalculateTotals(student);
+            document.getElementById('rcTotalMarks').innerText = total;
+            document.getElementById('rcOverallGrade').innerText = grade;
+            document.getElementById('rcPercentage').innerText = `${percentage}%`;
+
+            document.getElementById('reportCardModal').classList.remove('hidden');
+        }
+
+        function closeReportCard() {
+            document.getElementById('reportCardModal').classList.add('hidden');
+        }
+
+        renderApp();
+    </script>
+</body>
+</html>
